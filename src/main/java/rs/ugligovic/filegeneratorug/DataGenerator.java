@@ -86,7 +86,7 @@ public class DataGenerator {
 
     static boolean showCompletionInPercents(long x, SizeHolder fileSize, long goalSize, long sizePresizion) {
         if (x % sizePresizion == 0) {
-            int percentageOfCompletion = (int) (((fileSize.size + 1) * 100) / goalSize);
+            int percentageOfCompletion = (int) (((fileSize.size) * 100) / goalSize);
             percentageOfCompletion = percentageOfCompletion > 100 ? 100 : percentageOfCompletion;
             System.out.print(showCompletionBar(percentageOfCompletion) + percentageOfCompletion + "%\r");
         }
