@@ -45,9 +45,9 @@ public class DataGenerator {
             File file = new File(userParams.getPath());
             LongStream.range(0, Long.MAX_VALUE)
                     .filter(x -> checkSize(x, fileSize, userParams.getGoalSize()))
-                    .filter(x -> showCompletionInPercents(x, fileSize, userParams.getGoalSize(), userParams.getSizePrecision()))
-                    .filter(x -> flush(x, fileWriter, userParams.getFlushFrequency()))
-                    .filter(x -> updateSize(x, fileSize, file, userParams.getSizePrecision()))
+                    .peek(x -> showCompletionInPercents(x, fileSize, userParams.getGoalSize(), userParams.getSizePrecision()))
+                    .peek(x -> flush(x, fileWriter, userParams.getFlushFrequency()))
+                    .peek(x -> updateSize(x, fileSize, file, userParams.getSizePrecision()))
                     .forEach(x -> fileWriter.println(UUID.randomUUID().toString() + ";" + x));
 
         } catch (FileGeneratedException e) {
@@ -60,19 +60,16 @@ public class DataGenerator {
         System.out.println("Finished in " + ((System.currentTimeMillis() - start)) + " miliseconds!");
     }
 
-    static boolean flush(long x, PrintWriter fileWriter, long flushFrequency) {
+    static void flush(long x, PrintWriter fileWriter, long flushFrequency) {
         if (x % flushFrequency == 0) {
             fileWriter.flush();
         }
-
-        return true;
     }
 
-    static boolean updateSize(long x, SizeHolder fileSize, File file, long sizePresizion) {
+    static void updateSize(long x, SizeHolder fileSize, File file, long sizePresizion) {
         if (x % sizePresizion == 0) {
             fileSize.size = file.length();
         }
-        return true;
     }
 
     static boolean checkSize(long x, SizeHolder fileSize, long goalSize) {
@@ -84,14 +81,13 @@ public class DataGenerator {
 
     }
 
-    static boolean showCompletionInPercents(long x, SizeHolder fileSize, long goalSize, long sizePresizion) {
+    static void showCompletionInPercents(long x, SizeHolder fileSize, long goalSize, long sizePresizion) {
         if (x % sizePresizion == 0) {
             int percentageOfCompletion = (int) (((fileSize.size) * 100) / goalSize);
             percentageOfCompletion = percentageOfCompletion > 100 ? 100 : percentageOfCompletion;
             System.out.print(showCompletionBar(percentageOfCompletion) + percentageOfCompletion + "%\r");
         }
 
-        return true;
     }
 
     static String showCompletionBar(int percentageOfCompletion) {
