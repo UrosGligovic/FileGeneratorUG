@@ -22,10 +22,12 @@ public class DataGenerator {
 
     static class SizeHolder {
 
+        public long size;
+
         public SizeHolder() {
             this.size = 0;
         }
-        public long size;
+
     }
 
     public static void main(String[] args) {
@@ -53,6 +55,7 @@ public class DataGenerator {
 
         } catch (FileGeneratedException e) {
             System.out.println("Generated " + userParams.getPath());
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println("ERROR! " + e);
 
@@ -76,7 +79,7 @@ public class DataGenerator {
     static boolean checkSize(long x, SizeHolder fileSize, long goalSize) {
 
         if (fileSize.size >= goalSize) {
-            throw new FileGeneratedException("Finished!"); //not the best practice but not to make people install Java9 because of takeWhile
+            throw new FileGeneratedException((x+1) + " lines were generated!"); //not the best practice but not to make people install Java9 because of takeWhile
         }
         return true;
 
