@@ -40,6 +40,8 @@ public class DataGenerator {
         SizeHolder fileSize = new SizeHolder();
 
         GeneratorParams userParams = new GeneratorParams(args);
+        
+        long numOfGeneratedLines = 0l;
 
         try (PrintWriter fileWriter = new PrintWriter(new FileWriter(userParams.getPath()))) {
             File file = new File(userParams.getPath());
@@ -48,10 +50,11 @@ public class DataGenerator {
                     .peek(x -> showCompletionInPercents(x, fileSize, userParams.getGoalSize(), userParams.getSizePrecision()))
                     .peek(x -> flush(x, fileWriter, userParams.getFlushFrequency()))
                     .peek(x -> updateSize(x, fileSize, file, userParams.getSizePrecision()))
-                    .forEach(x -> fileWriter.println(UUID.randomUUID().toString() + ";" + x));
+                    .peek(x -> fileWriter.println(UUID.randomUUID().toString() + ";" + x))
+                    .count();
 
         } catch (FileGeneratedException e) {
-            System.out.println("Generated!!! 100%");
+            System.out.println("Generated " + numOfGeneratedLines +" lines!");
         } catch (Exception e) {
             System.out.println("ERROR! " + e);
 
