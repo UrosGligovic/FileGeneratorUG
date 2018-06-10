@@ -40,8 +40,6 @@ public class DataGenerator {
         SizeHolder fileSize = new SizeHolder();
 
         GeneratorParams userParams = new GeneratorParams(args);
-        
-        long numOfGeneratedLines = 0l;
 
         try (PrintWriter fileWriter = new PrintWriter(new FileWriter(userParams.getPath()))) {
             File file = new File(userParams.getPath());
@@ -54,7 +52,7 @@ public class DataGenerator {
                     .count();
 
         } catch (FileGeneratedException e) {
-            System.out.println("Generated " + numOfGeneratedLines +" lines!");
+            System.out.println("Generated " + userParams.getPath());
         } catch (Exception e) {
             System.out.println("ERROR! " + e);
 
