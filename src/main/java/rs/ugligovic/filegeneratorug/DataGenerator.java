@@ -44,11 +44,11 @@ public class DataGenerator {
         try (PrintWriter fileWriter = new PrintWriter(new FileWriter(userParams.getPath()))) {
             File file = new File(userParams.getPath());
             LongStream.range(0, Long.MAX_VALUE)
-                    .filter(x -> checkSize(x, fileSize, userParams.getGoalSize()))
                     .peek(x -> showCompletionInPercents(x, fileSize, userParams.getGoalSize(), userParams.getSizePrecision()))
+                    .peek(x -> fileWriter.println(UUID.randomUUID().toString() + ";" + x))
                     .peek(x -> flush(x, fileWriter, userParams.getFlushFrequency()))
                     .peek(x -> updateSize(x, fileSize, file, userParams.getSizePrecision()))
-                    .peek(x -> fileWriter.println(UUID.randomUUID().toString() + ";" + x))
+                    .filter(x -> checkSize(x, fileSize, userParams.getGoalSize()))
                     .count();
 
         } catch (FileGeneratedException e) {
